@@ -1,15 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const Token = {
-  setToken(token) {
-    axios.default.headers.common.Authorization = `Bearer ${token}`;
-  },
+// const Token = {
+//   setToken(token) {
+//     axios.default.headers.common.Authorization = `Bearer ${token}`;
+//   },
 
-  unsetToken() {
-    axios.default.headers.common.Authorization = '';
-  },
-};
+//   unsetToken() {
+//     axios.default.headers.common.Authorization = '';
+//   },
+// };
 
 export const RegisterUser = createAsyncThunk(
   'auth/signup',
