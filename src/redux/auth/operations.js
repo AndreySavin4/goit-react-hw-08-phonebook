@@ -12,7 +12,7 @@ const token = {
   },
 };
 
-export const RegisterUser = createAsyncThunk(
+export const registerUser = createAsyncThunk(
   'auth/register',
   async (contact, thunkAPI) => {
     try {
@@ -25,7 +25,7 @@ export const RegisterUser = createAsyncThunk(
   }
 );
 
-export const LoginUser = createAsyncThunk(
+export const loginUser = createAsyncThunk(
   'auth/login',
   async (user, thunkAPI) => {
     try {
@@ -38,7 +38,7 @@ export const LoginUser = createAsyncThunk(
   }
 );
 
-export const LogOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
+export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
     const responce = await axios.post('/users/logout');
     token.unset();
@@ -48,22 +48,24 @@ export const LogOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   }
 });
 
-export const RefreshUser = createAsyncThunk(
+export const refreshUser = createAsyncThunk(
   'auth/refresh',
   async (_, thunkAPI) => {
     const state = thunkAPI.getState();
-    const token = state.auth.token;
-    if (token === null) {
-      console.log('huinia');
-      return;
+    const refreshToken = state.auth.token;
+
+    if (refreshToken === null) {
+      return thunkAPI.rejectWithValue();
     }
+
+    token.set(refreshToken);
+
     try {
-      token.set(token);
-      const responce = await axios.get('/users/current');
-      console.log(responce);
-      // return responce;
+      const { data } = await axios.get('/users/current');
+
+      return data;
     } catch (error) {
-      // return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );

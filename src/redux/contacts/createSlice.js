@@ -32,7 +32,7 @@ const counterSlice = createSlice({
       //fetchBasic
       .addCase(fetchContacts.pending, state => isLoading(state))
       .addCase(fetchContacts.fulfilled, (state, action) => {
-        state.contacts.items.push(...action.payload);
+        state.contacts.items = action.payload;
         state.contacts.isLoading = false;
       })
       .addCase(fetchContacts.rejected, (state, action) =>

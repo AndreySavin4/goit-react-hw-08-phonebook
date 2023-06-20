@@ -1,8 +1,9 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { LoginUser } from 'redux/auth/operations';
+import { loginUser } from 'redux/auth/operations';
 import s from './Login.module.css';
+import { Link } from 'react-router-dom';
 
 const Schema = Yup.object({
   email: Yup.string().email().required(),
@@ -17,11 +18,12 @@ export const Login = () => {
   };
 
   const onSubmit = values => {
-    dispatch(LoginUser(values));
+    dispatch(loginUser(values));
   };
 
   return (
     <div className={s.form_container}>
+      <h2>Login </h2>
       <Formik
         initialValues={initialState}
         validationSchema={Schema}
@@ -58,6 +60,9 @@ export const Login = () => {
           </button>
         </Form>
       </Formik>
+      <p>
+        No account? <Link to="/register">Register</Link>
+      </p>
     </div>
   );
 };
