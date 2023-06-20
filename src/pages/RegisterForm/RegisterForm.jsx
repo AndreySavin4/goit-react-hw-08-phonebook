@@ -1,27 +1,31 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { LoginUser } from 'redux/auth/operations';
-import s from './Login.module.css';
+import { RegisterUser } from 'redux/auth/operations';
+import s from './RegisterForm.module.css';
 
 const Schema = Yup.object({
+  name: Yup.string().required(),
   email: Yup.string().email().required(),
   password: Yup.string().required(),
 });
 
-export const Login = () => {
+export const Register = () => {
   const dispatch = useDispatch();
   const initialState = {
+    name: '',
     email: '',
     password: '',
   };
 
-  const onSubmit = values => {
-    dispatch(LoginUser(values));
+  const onSubmit = (values, { resetForm }) => {
+    dispatch(RegisterUser(values));
+    resetForm();
   };
 
   return (
     <div className={s.form_container}>
+      <h2>Register</h2>
       <Formik
         initialValues={initialState}
         validationSchema={Schema}
@@ -30,15 +34,15 @@ export const Login = () => {
         <Form className={s.form}>
           <div>
             <label className={s.formLabel}>
-              Email
+              Name
               <Field
                 className={s.formInput}
-                type="email"
-                name="email"
-                placeholder=" Enter your Email"
+                type="text"
+                name="name"
+                placeholder=" Enter your name"
               />
             </label>
-            <ErrorMessage name="email" component="div" />
+            <ErrorMessage name="name" component="div" />
           </div>
           <div>
             <label className={s.formLabel}>
@@ -52,9 +56,21 @@ export const Login = () => {
             </label>
             <ErrorMessage name="password" component="div" />
           </div>
+          <div>
+            <label className={s.formLabel}>
+              Email
+              <Field
+                className={s.formInput}
+                type="email"
+                name="email"
+                placeholder=" Enter your Email"
+              />
+            </label>
+            <ErrorMessage name="email" component="div" />
+          </div>
 
           <button className={s.formButton} type="submit">
-            Войти
+            Зарегистрироваться
           </button>
         </Form>
       </Formik>
